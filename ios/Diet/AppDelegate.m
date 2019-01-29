@@ -5,31 +5,19 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-#import "AppDelegate.h"
+ #import "AppDelegate.h"
+ #import <React/RCTBundleURLProvider.h>
+ #import <React/RCTRootView.h>
+ #import <ReactNativeNavigation/ReactNativeNavigation.h>
 
-#import <React/RCTBundleURLProvider.h>
-#import <React/RCTRootView.h>
+ @implementation AppDelegate
 
-@implementation AppDelegate
+ - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
+ {
+     NSURL *jsCodeLocation = [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index" fallbackResource:nil];
+     [ReactNativeNavigation bootstrap:jsCodeLocation launchOptions:launchOptions];
 
-- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
-{
-  NSURL *jsCodeLocation;
+     return YES;
+ }
 
-  jsCodeLocation = [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index" fallbackResource:nil];
-
-  RCTRootView *rootView = [[RCTRootView alloc] initWithBundleURL:jsCodeLocation
-                                                      moduleName:@"Diet"
-                                               initialProperties:nil
-                                                   launchOptions:launchOptions];
-  rootView.backgroundColor = [UIColor blackColor];
-
-  self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
-  UIViewController *rootViewController = [UIViewController new];
-  rootViewController.view = rootView;
-  self.window.rootViewController = rootViewController;
-  [self.window makeKeyAndVisible];
-  return YES;
-}
-
-@end
+ @end
