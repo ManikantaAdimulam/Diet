@@ -10,6 +10,7 @@ import {
 import { connect } from "react-redux";
 import SafeAreaWrapper from "../Components/SafeAreaWrapper";
 import { Navigation } from "react-native-navigation";
+import { tabs } from "../../index";
 /**
  *
  *
@@ -34,31 +35,32 @@ class Introduction extends Component {
    */
   navigateToDashBoard = () => {
     console.log(this.props);
-    Navigation.push("AppStack", {
-      component: {
-        name: "dashboard",
-        passProps: {
-          text: "Pushed screen"
-        },
-        options: {
-          topBar: {
-            title: {
-              text: "DashBoard",
-              color: "#f4d766",
-              fontSize: 20,
-              fontWeight: "900"
-            },
-            background: {
-              color: "#000"
-            },
-            backButton: {
-              color: "#fff"
-            },
-            visible: true
-          }
-        }
-      }
-    });
+    // Navigation.push("tabs", {
+    //   component: {
+    //     name: "dashboard",
+    //     passProps: {
+    //       text: "Pushed screen"
+    //     },
+    //     options: {
+    //       topBar: {
+    //         title: {
+    //           text: "DashBoard",
+    //           color: "#f4d766",
+    //           fontSize: 20,
+    //           fontWeight: "900"
+    //         },
+    //         background: {
+    //           color: "#000"
+    //         },
+    //         backButton: {
+    //           color: "#fff"
+    //         },
+    //         visible: true
+    //       }
+    //     }
+    //   }
+    // });
+    tabs();
   };
 
   /**
@@ -70,7 +72,7 @@ class Introduction extends Component {
   render() {
     return (
       <SafeAreaWrapper>
-        <Text style={styles.heading}>Meat Directory</Text>
+        <Text style={styles.heading}>Meat Journal</Text>
         <Image
           source={require("../../Assets/meat_icon.png")}
           style={styles.logo}

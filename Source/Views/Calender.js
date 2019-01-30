@@ -1,8 +1,19 @@
 import React, { Component } from "react";
-import { Text, StyleSheet, ScrollView, View, Platform } from "react-native";
-import { Calendar } from "react-native-calendars";
+import {
+  Text,
+  StyleSheet,
+  ScrollView,
+  View,
+  Platform,
+  Dimensions
+} from "react-native";
+import { CalendarList } from "react-native-calendars";
+import List from "../Components/List";
+import { connect } from "react-redux";
+import SafeAreaWrapper from "../Components/SafeAreaWrapper";
+import { Navigation } from "react-native-navigation";
 
-export default class Calender extends Component {
+class Calender extends Component {
   constructor(props) {
     super(props);
     this.state = {};
@@ -10,10 +21,13 @@ export default class Calender extends Component {
   }
 
   render() {
+    console.log(this.props);
     return (
-      <View style={styles.container}>
-        <Calendar
-          onDayPress={this.onDayPress}
+      <SafeAreaWrapper style={styles.container}>
+        <CalendarList
+          onDayPress={day => {
+            this.onDayPress(day);
+          }}
           style={styles.calendar}
           hideExtraDays
           monthFormat={"ddd MMM yyyy"}
@@ -24,6 +38,14 @@ export default class Calender extends Component {
               selectedDotColor: "orange"
             }
           }}
+          minDate={new Date()}
+          // Enable horizontal scrolling, default = false
+          horizontal={true}
+          // Enable paging on horizontal, default = false
+          pagingEnabled={true}
+          ///
+          hideArrows={false}
+          ///
           theme={{
             backgroundColor: "#ffffff",
             calendarBackground: "#ffffff",
@@ -63,23 +85,40 @@ export default class Calender extends Component {
             textDayHeaderFontSize: 16
           }}
         />
-      </View>
+        <View style={{ height: height * 0.35 }}>
+          <List list={[this.props.list.data[0]]} />
+        </View>
+      </SafeAreaWrapper>
     );
   }
 
   onDayPress(day) {
-    this.setState({
-      selected: day.dateString
+    // this.setState({
+    //   selected: day.dateString
+    // });
+    console.log("overlay");
+    Navigation.showOverlay({
+      component: {
+        name: "logEntry",
+        animate: true,
+        options: {
+          screenBackgroundColor: "transparent",
+          modalPresentationStyle: "pageSheet",
+          topBar: {
+            visible: false
+          }
+        }
+      }
     });
   }
 }
-
+const mapStateToProps = state => ({ list: state.listReducer });
+const { height, width } = Dimensions.get("window");
+export default connect(mapStateToProps)(Calender);
 const styles = StyleSheet.create({
   calendar: {
-    borderTopWidth: 1,
-    paddingTop: 5,
-    borderColor: "#eee",
-    height: 350
+    height: height * 0.6,
+    backgroundColor: "red"
   },
   text: {
     textAlign: "center",

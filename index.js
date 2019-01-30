@@ -20,7 +20,12 @@ Navigation.events().registerAppLaunchedListener(() => {
         children: [
           {
             component: {
-              name: "WelcomeScreen"
+              name: "WelcomeScreen",
+              options: {
+                topBar: {
+                  visible: false
+                }
+              }
             }
           }
         ]
@@ -28,3 +33,61 @@ Navigation.events().registerAppLaunchedListener(() => {
     }
   });
 });
+
+export const tabs = () => {
+  Navigation.setRoot({
+    root: {
+      stack: {
+        children: [
+          {
+            bottomTabs: {
+              id: "tabs",
+              children: [
+                {
+                  component: {
+                    name: "dashboard",
+                    options: {
+                      bottomTab: {
+                        text: "Tab 1",
+                        icon: require("./Assets/logs.png"),
+                        testID: "FIRST",
+                        selectedTextColor: "red",
+                        selectedIconColor: "red"
+                      }
+                    }
+                  }
+                },
+                {
+                  component: {
+                    name: "statistics",
+                    options: {
+                      bottomTab: {
+                        text: "Tab 2",
+                        icon: require("./Assets/statistics.png"),
+                        testID: "SECOND",
+                        selectedTextColor: "red"
+                      }
+                    }
+                  }
+                }
+              ],
+              options: {
+                topBar: {
+                  visible: true,
+                  background: {
+                    color: "#000"
+                  }
+                }
+              }
+            }
+          }
+        ]
+      }
+    }
+  });
+  Navigation.setDefaultOptions({
+    topBar: {
+      visible: true
+    }
+  });
+};
