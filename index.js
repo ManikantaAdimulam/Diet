@@ -1,6 +1,6 @@
 /**
  * @format
- * @lint-ignore-every XPLATJSCOPYRIGHT1
+ * @lint-ignore-every
  */
 
 // import {AppRegistry} from 'react-native';
@@ -48,8 +48,8 @@ export const tabs = () => {
                     name: "dashboard",
                     options: {
                       bottomTab: {
-                        text: "Tab 1",
-                        icon: require("./Assets/logs.png"),
+                        text: "Log Book",
+                        icon: { uri: "logs" },
                         testID: "FIRST",
                         selectedTextColor: "red",
                         selectedIconColor: "red"
@@ -62,10 +62,11 @@ export const tabs = () => {
                     name: "statistics",
                     options: {
                       bottomTab: {
-                        text: "Tab 2",
-                        icon: require("./Assets/statistics.png"),
+                        text: "Statistics",
+                        icon: { uri: "statistics" },
                         testID: "SECOND",
-                        selectedTextColor: "red"
+                        selectedTextColor: "red",
+                        selectedIconColor: "red"
                       }
                     }
                   }

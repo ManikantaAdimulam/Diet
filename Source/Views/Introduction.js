@@ -34,32 +34,6 @@ class Introduction extends Component {
    * @memberof Introduction
    */
   navigateToDashBoard = () => {
-    console.log(this.props);
-    // Navigation.push("tabs", {
-    //   component: {
-    //     name: "dashboard",
-    //     passProps: {
-    //       text: "Pushed screen"
-    //     },
-    //     options: {
-    //       topBar: {
-    //         title: {
-    //           text: "DashBoard",
-    //           color: "#f4d766",
-    //           fontSize: 20,
-    //           fontWeight: "900"
-    //         },
-    //         background: {
-    //           color: "#000"
-    //         },
-    //         backButton: {
-    //           color: "#fff"
-    //         },
-    //         visible: true
-    //       }
-    //     }
-    //   }
-    // });
     tabs();
   };
 
@@ -71,7 +45,7 @@ class Introduction extends Component {
    */
   render() {
     return (
-      <SafeAreaWrapper>
+      <SafeAreaWrapper style={{ backgroundColor: "#f4d766" }}>
         <Text style={styles.heading}>Meat Journal</Text>
         <Image
           source={require("../../Assets/meat_icon.png")}

@@ -12,8 +12,21 @@ import ScrollableTabView, {
 } from "react-native-scrollable-tab-view";
 import Calender from "./Calender";
 import ConsumptionList from "./ConsumptionList";
+import { fetchDataFromDB } from "../DataBase/SQLite";
+import { setInitialData, addNewEntry } from "../Redux/Actions/Actions";
 const { width } = Dimensions.get("window");
+/**
+ *
+ *
+ * @class DashBoard
+ * @extends {Component}
+ */
 class DashBoard extends Component {
+  /**
+   * Creates an instance of DashBoard.
+   * @param {*} props
+   * @memberof DashBoard
+   */
   constructor(props) {
     super(props);
     this.state = {
@@ -21,10 +34,51 @@ class DashBoard extends Component {
     };
   }
 
+  /**
+   * Life cycle method
+   *
+   * @memberof DashBoard
+   */
+  componentDidMount() {
+    fetchDataFromDB(
+      "",
+      success => {
+        this.manipulateData(success);
+      },
+      error => {}
+    );
+  }
+
+  /**
+   * Manipulating array for storing.
+   *
+   * @param {*} data
+   */
+  manipulateData = data => {
+    const { dispatch } = this.props;
+    data.forEach(item => {
+      let entry = { date: "", data: [] };
+      entry.date = item["Date"];
+      delete item.date;
+      entry.data = [item];
+      dispatch(addNewEntry(entry));
+    });
+  };
+  /**
+   *
+   *
+   * @param {*} ref
+   */
   scrollableTabBarRef = ref => {
     this.scrollableTabBar = ref;
   };
 
+  /**
+   *
+   *
+   * @returns
+   * @memberof DashBoard
+   */
   render() {
     return (
       <View flex={1}>
@@ -33,19 +87,9 @@ class DashBoard extends Component {
           page={this.state.selected}
           renderTabBar={() => (
             <ScrollableTabBar
-              style={{
-                backgroundColor: "#000",
-                height: 30
-              }}
-              textStyle={{
-                color: "#f4d766",
-                fontSize: 17,
-                top: -15
-              }}
-              underlineStyle={{
-                backgroundColor: "#f4d766",
-                height: 4
-              }}
+              style={styles.scrollableTabBar}
+              textStyle={styles.tabBarTextStyles}
+              underlineStyle={styles.underlineStyles}
             />
           )}
         >
@@ -68,19 +112,24 @@ class DashBoard extends Component {
   }
 }
 
+/**
+ *
+ *
+ * @param {*} state
+ */
 const mapStateToProps = state => ({});
 
 export default connect(mapStateToProps)(DashBoard);
 
 const styles = StyleSheet.create({
   floatingButtonView: {
-    height: 50,
-    width: 50,
-    position: "absolute",
-    bottom: 25,
-    right: 25,
     borderRadius: 25,
+    bottom: 25,
+    height: 50,
+    position: "absolute",
     justifyContent: "center",
+    right: 25,
+    width: 50,
     alignItems: "center"
   },
   floatingButton: {
@@ -89,11 +138,24 @@ const styles = StyleSheet.create({
     borderRadius: 25,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#000"
+    backgroundColor: "#000000"
   },
   buttonText: {
     color: "#f4d766",
     fontSize: 25,
     fontWeight: "500"
+  },
+  scrollableTabBar: {
+    backgroundColor: "#000000",
+    height: 30
+  },
+  tabBarTextStyles: {
+    color: "#f4d766",
+    fontSize: 17,
+    top: -15
+  },
+  underlineStyles: {
+    backgroundColor: "#f4d766",
+    height: 4
   }
 });

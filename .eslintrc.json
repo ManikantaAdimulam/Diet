@@ -1,6 +1,10 @@
 {
+  "parser": "babel-eslint",
   "plugins": ["react", "react-native"],
   "parserOptions": {
+    "sourceType": "module",
+    "allowImportExportEverywhere": true,
+    "ecmaVersion": 6,
     "ecmaFeatures": {
       "jsx": true
     }
@@ -8,5 +12,9 @@
   "env": {
     "react-native/react-native": true
   },
-  "extends": ["plugin:react-native/all"]
+  "extends": ["plugin:react-native/all"],
+  "rules": {
+    "react-native/sort-styles": 0,
+    "react-native/no-color-literals": 0
+  }
 }

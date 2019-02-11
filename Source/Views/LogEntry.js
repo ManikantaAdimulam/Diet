@@ -4,44 +4,278 @@ import {
   Text,
   StyleSheet,
   Dimensions,
-  TouchableOpacity
+  TouchableOpacity,
+  Image,
+  Animated,
+  TextInput,
+  KeyboardAvoidingView
 } from "react-native";
 import { connect } from "react-redux";
 import SafeAreaWrapper from "../Components/SafeAreaWrapper";
-
+import { Navigation } from "react-native-navigation";
+import { addNewEntry } from "../Redux/Actions/Actions";
+import { insertData } from "../DataBase/SQLite";
+import { insertDataIntoDB, fetchFromDB } from "../ViewModals/DBViewModal";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scrollview";
+/**
+ *
+ *
+ * @class LogEntry
+ * @extends {Component}
+ */
 class LogEntry extends Component {
+  /**
+   *Creates an instance of LogEntry.
+   * @param {*} props
+   * @memberof LogEntry
+   */
+  constructor(props) {
+    super(props);
+    this.closeButton = this.closeButton.bind();
+    const { Animal, Quantity, Time, date } = props.data;
+    // console.log(props.data);
+    this.state = {
+      top: new Animated.Value(height),
+      animal: Animal || "",
+      name: Animal || "",
+      quantity: Quantity || "",
+      time: Time || "",
+      fields: [
+        { key: "Name", value: Animal || "" },
+        { key: "Animal", value: Animal || "" },
+        { key: "Quantity", value: Quantity || "" },
+        { key: "Date", value: date || "" },
+        { key: "Time", value: Time || "" }
+      ]
+    };
+    this.entryInput = this.entryInput.bind(this);
+    this.onAddOrEditEntryClick = this.onAddOrEditEntryClick.bind(this);
+  }
+
+  /**
+   *
+   *
+   * @memberof LogEntry
+   */
+  componentDidMount() {
+    Animated.timing(this.state.top, {
+      toValue: 0,
+      duration: 150
+    }).start();
+  }
+
+  /**
+   *
+   *
+   * @memberof LogEntry
+   */
+  closeButton = () => {
+    Animated.timing(this.state.top, {
+      toValue: height,
+      duration: 100
+    }).start();
+    setTimeout(() => {
+      Navigation.dismissOverlay(this.props.componentId);
+    }, 200);
+  };
+
+  /**
+   *
+   *
+   * @memberof LogEntry
+   */
+  onAddOrEditEntryClick = () => {
+    let entry = { date: "", data: [] };
+    const { dispatch, data } = this.props;
+    entry.date = data.date;
+    var object = this.state.fields.reduce(
+      (obj, item) => ((obj[item.key] = item.value), obj),
+      {}
+    );
+    // delete object.Date;
+    entry.data = [object];
+    insertDataIntoDB(entry, isSuccess => {
+      if (isSuccess) {
+        // fetchFromDB("", dispatch);
+        dispatch(addNewEntry(entry));
+      }
+    });
+  };
+
+  /**
+   *
+   *
+   * @param {*} ref
+   */
+  inputRef = ref => (this.input = ref);
+
+  /**
+   *
+   *
+   * @memberof LogEntry
+   */
+  entryInput = (text, index) => {
+    this.state.fields[index].value = text;
+    switch (index) {
+      case 0:
+        this.setState({ name: text });
+        break;
+      case 1:
+        this.setState({ animal: text });
+        break;
+      case 2:
+        this.setState({ quantity: text });
+        break;
+      case 3:
+        this.setState({ date: text });
+        break;
+      case 4:
+        this.setState({ time: text });
+        break;
+      default:
+        break;
+    }
+  };
+
+  /**
+   *
+   *
+   * @returns
+   * @memberof LogEntry
+   */
   render() {
+    const { title, buttonTitle } = this.props;
     return (
-      <View style={styles.container}>
-        <TouchableOpacity>
-          <View style={styles.floatingButton}>
-            <Text style={styles.buttonText}>+</Text>
+      <KeyboardAwareScrollView style={[styles.container]}>
+        <Animated.View
+          style={[{ top: this.state.top }, styles.closeButtonView]}
+        >
+          <TouchableOpacity onPress={this.closeButton}>
+            <Image
+              source={{ uri: "down-arrow" }}
+              style={styles.floatingButton}
+            />
+          </TouchableOpacity>
+          <View style={styles.logView}>
+            <View style={styles.header}>
+              <Text style={styles.headerText}>{title}</Text>
+            </View>
+            {this.state.fields.map((item, index) => {
+              return (
+                <FieldView
+                  data={item}
+                  onChangeText={this.entryInput}
+                  key={item.key}
+                  index={index}
+                />
+              );
+            })}
+            <TouchableOpacity onPress={this.onAddOrEditEntryClick}>
+              <View style={styles.button}>
+                <Text style={styles.buttonText}>{buttonTitle}</Text>
+              </View>
+            </TouchableOpacity>
           </View>
-        </TouchableOpacity>
-      </View>
+        </Animated.View>
+      </KeyboardAwareScrollView>
     );
   }
 }
 
+/**
+ *
+ *
+ * @param {*} { data }
+ * @returns
+ */
+const FieldView = ({ data, onChangeText, index }) => {
+  return (
+    <View style={styles.fieldView}>
+      <Text style={styles.fieldTitle}>{data.key}</Text>
+      <TextInput
+        style={styles.textInput}
+        onChangeText={e => onChangeText(e, index)}
+        value={data.value}
+      />
+    </View>
+  );
+};
+///
 const mapStateToProps = state => ({});
-
+///
 export default connect(mapStateToProps)(LogEntry);
+///
 const { height, width } = Dimensions.get("window");
+///
 const styles = StyleSheet.create({
   container: {
-    height: height * 0.6,
+    height,
     width,
-    backgroundColor: "red",
-    top: height * 0.4,
+    // alignItems: "center",
+    backgroundColor: "#00000080"
+  },
+  header: {
+    backgroundColor: "#000",
+    height: 44,
+    width: width - 16,
+    justifyContent: "center",
+    paddingLeft: 15
+  },
+  headerText: {
+    color: "#f4d711",
+    fontSize: 18,
+    fontWeight: "500"
+  },
+  logView: {
+    height: height * 0.8,
+    width: width - 16,
+    backgroundColor: "#fff",
+    top: height * 0.29,
+    borderColor: "lightgray",
+    alignItems: "center",
+    borderRadius: 5,
+    overflow: "hidden"
+  },
+  closeButtonView: {
     alignItems: "center"
   },
   floatingButton: {
-    height: 50,
-    width: 50,
+    height: 40,
+    width: 40,
     borderRadius: 25,
     justifyContent: "center",
     alignItems: "center",
+    top: height * 0.28
+  },
+  fieldTitle: {
+    fontWeight: "700"
+  },
+  textInput: {
+    borderWidth: 0.2,
+    borderColor: "gray",
+    backgroundColor: "#D3D3D330",
+    width: width * 0.8,
+    borderRadius: 5,
+    height: 28,
+    marginTop: 6,
+    paddingLeft: 6,
+    fontFamily: "Courier"
+  },
+  fieldView: {
+    marginTop: 8
+  },
+  button: {
+    height: 44,
+    width: 160,
     backgroundColor: "#000",
-    top: -58
+    justifyContent: "center",
+    alignItems: "center",
+    borderRadius: 10,
+    marginTop: 25
+  },
+  buttonText: {
+    fontSize: 18,
+    fontWeight: "bold",
+    color: "#fff"
   }
 });

@@ -5,82 +5,98 @@ import {
   StyleSheet,
   Dimensions,
   SectionList,
-  Image
+  Image,
+  TouchableOpacity
 } from "react-native";
-
-const List = ({ list }) => {
-  console.log("list", list);
-  return (
-    <View style={styles.container}>
-      <SectionList
-        sections={list}
-        renderSectionHeader={this.renderSection}
-        renderItem={this.renderItem}
-        keyExtractor={this.keyExtractor}
-      />
-    </View>
-  );
-};
+import _ from "lodash";
 /**
- * Section Item
  *
- * @memberof List
+ *
+ * @class List
+ * @extends {Component}
  */
-renderItem = ({ item }) => {
-  let icon = "";
-  switch (item.icon) {
-    case "pig":
-      icon = require("../../Assets/pig.png");
-      break;
-    case "goat":
-      icon = require("../../Assets/goat.png");
-      break;
-    case "sheep":
-      icon = require("../../Assets/sheep.png");
-      break;
-    case "chicken":
-      icon = require("../../Assets/chicken.png");
-      break;
-    case "cow":
-      icon = require("../../Assets/cow.png");
-      break;
-    default:
-      icon = require("../../Assets/pig.png");
-  }
-  return (
-    <View style={styles.card}>
-      <View style={styles.meatView}>
-        <Image source={icon} style={styles.icon} />
-        <View justifyContent={"space-around"}>
-          <Text style={styles.meatName}>{item.animal}</Text>
-          <Text style={styles.meatQuantity}>{item.quantity}</Text>
+class List extends Component {
+  /**
+   * Section header
+   *
+   * @param {*} { section: { title } }
+   * @returns
+   */
+  renderSection = ({ section: { date } }) => {
+    return <Text style={styles.sectionHeader}>{date}</Text>;
+  };
+
+  /**
+   * Custom key extractor
+   *
+   * @param {*} item
+   * @param {*} index
+   */
+  keyExtractor = (item, index) => index.toString();
+  /**
+   * Section Item
+   *
+   * @memberof List
+   */
+  renderItem = (item, index) => {
+    return (
+      <TouchableOpacity onPress={() => this.onPressItem(item)}>
+        <View style={styles.card}>
+          <View style={styles.meatView}>
+            <Image
+              source={{ uri: item.Animal.toLowerCase() }}
+              style={styles.icon}
+            />
+            <View justifyContent={"space-around"}>
+              <Text style={styles.meatName}>{item.Name}</Text>
+              <Text style={styles.meatQuantity}>{item.Quantity}</Text>
+            </View>
+          </View>
+          <Text style={styles.timeText}>{item.Time}</Text>
         </View>
+      </TouchableOpacity>
+    );
+  };
+  //
+  onPressItem = item => {
+    const { list } = this.props;
+    const { date } = list[0];
+    const { onPress } = this.props;
+    if (onPress != undefined) {
+      item.date = date;
+      onPress(item);
+    }
+  };
+  /**
+   *
+   *
+   * @returns
+   * @memberof List
+   */
+  render() {
+    const { list } = this.props;
+    const sorted = list.sort(function(a, b) {
+      return new Date(a.date) - new Date(b.date);
+    });
+
+    return (
+      <View style={styles.container}>
+        <SectionList
+          sections={sorted}
+          renderSectionHeader={this.renderSection}
+          renderItem={({ item }) => {
+            return this.renderItem(item);
+          }}
+          keyExtractor={this.keyExtractor}
+        />
       </View>
-      <Text style={styles.timeText}>{item.time}</Text>
-    </View>
-  );
-};
-
-/**
- * Section header
- *
- * @param {*} { section: { title } }
- * @returns
- */
-renderSection = ({ section: { date } }) => {
-  return <Text style={styles.sectionHeader}>{date}</Text>;
-};
-
-/**
- * Custom key extractor
- *
- * @param {*} item
- * @param {*} index
- */
-keyExtractor = (item, index) => index.toString();
+    );
+  }
+}
 export default List;
-
+///
 const { height, width } = Dimensions.get("window");
+///
 const styles = StyleSheet.create({
   container: {
     flex: 1,

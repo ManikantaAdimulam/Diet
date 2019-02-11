@@ -12,32 +12,115 @@ import List from "../Components/List";
 import { connect } from "react-redux";
 import SafeAreaWrapper from "../Components/SafeAreaWrapper";
 import { Navigation } from "react-native-navigation";
+import moment from "moment";
 
+/**
+ *
+ *
+ * @class Calender
+ * @extends {Component}
+ */
 class Calender extends Component {
+  /**
+   *Creates an instance of Calender.
+   * @param {*} props
+   * @memberof Calender
+   */
   constructor(props) {
     super(props);
     this.state = {};
     this.onDayPress = this.onDayPress.bind(this);
   }
 
+  /**
+   *
+   *
+   * @param {*} day
+   * @memberof Calender
+   */
+  onDayPress = date => {
+    const { day, month, year, timestamp } = date;
+    this.showOverlay(
+      "Add Entry",
+      {
+        date: moment(timestamp).format("DD MMM YYYY")
+      },
+      "Add"
+    );
+  };
+
+  /**
+   *
+   * @param {*} title
+   * @param {*} props
+   * @memberof Calender
+   */
+  showOverlay = (title, props, buttonTitle) => {
+    Navigation.showOverlay({
+      component: {
+        name: "logEntry",
+        animate: true,
+        passProps: {
+          title: title,
+          data: props,
+          buttonTitle: buttonTitle
+        },
+        options: {
+          screenBackgroundColor: "transparent",
+          modalPresentationStyle: "pageSheet",
+          layout: {
+            backgroundColor: "transparent"
+          },
+          topBar: {
+            visible: false,
+            animate: true
+          }
+        }
+      }
+    });
+  };
+
+  /**
+   *
+   *
+   * @memberof Calender
+   */
+  onEntryClick = data => {
+    this.showOverlay("Edit Entry", data, "Save");
+  };
+
+  /**
+   *
+   *
+   * @returns
+   * @memberof Calender
+   */
   render() {
-    console.log(this.props);
+    const { data } = this.props.list;
+    const list = data.filter(item => {
+      // console.log(item.date);
+      return item.date === moment(new Date()).format("DD MMM YYYY");
+    });
+    const markedDate = {
+      [this.state.selected]: {
+        selected: true,
+        marked: true,
+        disableTouchEvent: true,
+        selectedDotColor: "orange"
+      }
+    };
     return (
       <SafeAreaWrapper style={styles.container}>
         <CalendarList
           onDayPress={day => {
             this.onDayPress(day);
           }}
+          pastScrollRange={0}
+          futureScrollRange={1}
           style={styles.calendar}
           hideExtraDays
           monthFormat={"ddd MMM yyyy"}
-          markedDates={{
-            [this.state.selected]: {
-              selected: true,
-              disableTouchEvent: true,
-              selectedDotColor: "orange"
-            }
-          }}
+          markedDates={markedDate}
           minDate={new Date()}
           // Enable horizontal scrolling, default = false
           horizontal={true}
@@ -51,7 +134,7 @@ class Calender extends Component {
             calendarBackground: "#ffffff",
             textSectionTitleColor: "gray",
             selectedDayBackgroundColor: "#f4d711",
-            selectedDayTextColor: "#000",
+            selectedDayTextColor: "#fff",
             todayTextColor: "#00adf5",
             dayTextColor: "#2d4150",
             "stylesheet.day.basic": {
@@ -86,35 +169,20 @@ class Calender extends Component {
           }}
         />
         <View style={{ height: height * 0.35 }}>
-          <List list={[this.props.list.data[0]]} />
+          {data.length > 0 && <List list={list} onPress={this.onEntryClick} />}
         </View>
       </SafeAreaWrapper>
     );
   }
-
-  onDayPress(day) {
-    // this.setState({
-    //   selected: day.dateString
-    // });
-    console.log("overlay");
-    Navigation.showOverlay({
-      component: {
-        name: "logEntry",
-        animate: true,
-        options: {
-          screenBackgroundColor: "transparent",
-          modalPresentationStyle: "pageSheet",
-          topBar: {
-            visible: false
-          }
-        }
-      }
-    });
-  }
 }
+
+///
 const mapStateToProps = state => ({ list: state.listReducer });
+///
 const { height, width } = Dimensions.get("window");
+///
 export default connect(mapStateToProps)(Calender);
+///
 const styles = StyleSheet.create({
   calendar: {
     height: height * 0.6,
