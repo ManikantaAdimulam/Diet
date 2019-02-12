@@ -8,7 +8,12 @@ import ConsumptionList from "../Views/ConsumptionList";
 import Calender from "../Views/Calender";
 import Statistics from "../Views/Statistics";
 import LogEntry from "../Views/LogEntry";
+import { Settings } from "../Views/Settings";
+
+///
 const Store = store();
+
+///
 const registerScreens = () => {
   Navigation.registerComponentWithRedux(
     "WelcomeScreen",
@@ -49,6 +54,12 @@ const registerScreens = () => {
   Navigation.registerComponentWithRedux(
     "logEntry",
     () => LogEntry,
+    Provider,
+    Store
+  );
+  Navigation.registerComponentWithRedux(
+    "settings",
+    () => Settings,
     Provider,
     Store
   );

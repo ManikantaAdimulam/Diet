@@ -86,7 +86,9 @@ class Calender extends Component {
    * @memberof Calender
    */
   onEntryClick = data => {
-    this.showOverlay("Edit Entry", data, "Save");
+    let newObj = data;
+    newObj.date = moment(data.date * 1000).format("DD MMM YYYY");
+    this.showOverlay("Edit Entry", newObj, "Save");
   };
 
   /**
@@ -97,9 +99,9 @@ class Calender extends Component {
    */
   render() {
     const { data } = this.props.list;
+    const today = moment(new Date()).format("DD MMM YYYY");
     const list = data.filter(item => {
-      // console.log(item.date);
-      return item.date === moment(new Date()).format("DD MMM YYYY");
+      return item.date * 1000 === moment(today).valueOf();
     });
     const markedDate = {
       [this.state.selected]: {

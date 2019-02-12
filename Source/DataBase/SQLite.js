@@ -14,17 +14,13 @@ const dbId = "Manikanta.Diet";
  *
  * @param {*} err
  */
-function errorCB(err) {
-  // console.log("SQL Error: " + err);
-}
+function errorCB(err) {}
 
 /**
  * Open call back
  *
  */
-function openCB() {
-  // console.log("Database OPENED");
-}
+function openCB() {}
 function createDataBase() {
   return sqlite.openDatabase(dbName, dbVersion, dbId, openCB, errorCB);
 }
@@ -35,11 +31,9 @@ function createDataBase() {
  */
 function createTable() {
   const query =
-    "create table Diet (id INTEGER PRIMARY KEY AUTOINCREMENT,Date TEXT, Name TEXT, Animal TEXT, Quantity TEXT, Time TEXT)";
+    "create table Diet (id INTEGER PRIMARY KEY AUTOINCREMENT,Date INTEGER, Name TEXT, Animal TEXT, Quantity TEXT, Time TEXT)";
   db.transaction(tx => {
-    tx.executeSql(query, [], (tx, result) => {
-      // console.log(result, "result");
-    });
+    tx.executeSql(query, [], (tx, result) => {});
   });
 }
 
@@ -49,7 +43,8 @@ function createTable() {
  * @param {*} params
  */
 function insertData(params, completion) {
-  let query = "insert into Diet(Name, Animal, Quantity, Date, Time) values (";
+  let query =
+    "insert or replace into Diet(Name, Animal, Quantity, Date, Time) values (";
   let dataString = "";
   params.data.forEach(element => {
     Object.keys(element).forEach(key => {
@@ -57,7 +52,6 @@ function insertData(params, completion) {
     });
   });
   query += dataString.slice(0, -1) + ")";
-  // console.log(query, "query", params);
   db.transaction(tx => {
     tx.executeSql(query, [], (tx, result) => {
       if (result.error === undefined) {
@@ -69,6 +63,40 @@ function insertData(params, completion) {
   });
 }
 
+/**
+ *
+ *
+ * @param {*} params
+ * @param {*} id
+ * @param {*} completion
+ */
+function updateData(params, id, completion) {
+  let query = "update Diet set ";
+  let dataString = "";
+  params.data.forEach(obj => {
+    Object.keys(obj).forEach(key => {
+      dataString += key + "=" + JSON.stringify(obj[key]) + ",";
+    });
+  });
+  query += dataString.slice(0, -1) + " where id=" + id;
+  db.transaction(tx => {
+    tx.executeSql(query, [], (tx, result) => {
+      if (result.error === undefined) {
+        completion(true);
+      } else {
+        completion(false);
+      }
+    });
+  });
+}
+
+/**
+ *
+ *
+ * @param {*} date
+ * @param {*} success
+ * @param {*} failure
+ */
 function fetchDataFromDB(date, success, failure) {
   let query = "";
   if (date === "") {
@@ -84,6 +112,14 @@ function fetchDataFromDB(date, success, failure) {
     });
   });
 }
+
+/**
+ *
+ *
+ * @param {*} query
+ * @param {*} success
+ * @param {*} failure
+ */
 function fetchData(query, success, failure) {
   db.transaction(tx => {
     tx.executeSql(query, [], (tx, result) => {
@@ -95,4 +131,11 @@ function fetchData(query, success, failure) {
     });
   });
 }
-export { createDataBase, createTable, insertData, fetchDataFromDB, fetchData };
+export {
+  createDataBase,
+  createTable,
+  insertData,
+  fetchDataFromDB,
+  fetchData,
+  updateData
+};

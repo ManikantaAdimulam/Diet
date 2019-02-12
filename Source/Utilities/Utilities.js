@@ -1,8 +1,12 @@
+import moment from "moment";
+
 export const Utilities = {
-  nextDay: (date, period) => {
+  nextDay: (date, period, next = true) => {
     var firstDay = new Date(date);
     let periodValue;
     switch (period) {
+      case "day":
+        periodValue = 1;
       case "year":
         periodValue = leapYear(firstDay.getFullYear()) ? 366 : 365;
         break;
@@ -12,11 +16,13 @@ export const Utilities = {
       default:
         periodValue = 7;
     }
-    console.log(periodValue);
     var nextWeek = new Date(
       firstDay.getTime() + periodValue * 24 * 60 * 60 * 1000
     );
-    return nextWeek;
+    var previousWeek = new Date(
+      firstDay.getTime() - periodValue * 24 * 60 * 60 * 1000
+    );
+    return next ? nextWeek : previousWeek;
   }
 };
 

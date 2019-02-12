@@ -1,4 +1,5 @@
-import { ADD_NEW_ENTRY } from "../Actions/Actions";
+import { ADD_NEW_ENTRY, EDIT_ENTRY } from "../Actions/Actions";
+import moment from "moment";
 const initialState = { data: [] };
 
 export function listReducer(state = initialState, action) {
@@ -8,11 +9,39 @@ export function listReducer(state = initialState, action) {
         ...state.data,
         data: manipulate(state.data, action.entry)
       };
-
+    case EDIT_ENTRY:
+      return {
+        ...state.data,
+        data: state.data.map(entry => {
+          if (entry.date === action.entry.date) {
+            return {
+              ...entry,
+              data: entry.data.map(oldEntry => {
+                if (oldEntry.id === action.index) {
+                  let entryObj = action.entry.data[0];
+                  entryObj.id = action.index;
+                  return entryObj;
+                }
+                return oldEntry;
+              })
+            };
+          }
+          return entry;
+        })
+        //updateData(state.data, action.entry, action.index)
+      };
     default:
       return { ...state };
   }
 }
+
+/**
+ *
+ *
+ * @param {*} previousData
+ * @param {*} newEntry
+ * @returns
+ */
 function manipulate(previousData, newEntry) {
   var newPreviousDataObj = [];
   if (previousData.length > 0) {
@@ -33,3 +62,9 @@ function manipulate(previousData, newEntry) {
     return [newEntry];
   }
 }
+
+// function updateData(data, newEntry, index) {
+//   return data.map(entry=>{
+
+//   })
+// }

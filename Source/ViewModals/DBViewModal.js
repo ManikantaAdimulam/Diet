@@ -19,9 +19,7 @@ const fetchFromDB = (date, dispatch) => {
         dispatch(addNewEntry(entry));
       });
     },
-    error => {
-      // console.log(error, "error");
-    }
+    error => {}
   );
 };
 ///
@@ -29,7 +27,10 @@ const fetchDataForDateRage = (from, to, success, failure) => {
   let fromDate = JSON.stringify(from);
   let toDate = JSON.stringify(to);
   let query =
-    "select * from Diet where date >= " + fromDate + "and date <= " + toDate;
+    "select * from Diet where date >= " +
+    fromDate / 1000 +
+    " and date <= " +
+    toDate / 1000;
   fetchData(
     query,
     result => {

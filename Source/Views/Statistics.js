@@ -15,7 +15,7 @@ import { Utilities } from "../Utilities/Utilities";
 import { fetchDataForDateRage } from "../ViewModals/DBViewModal";
 import moment from "moment";
 import { Navigation } from "react-native-navigation";
-
+///
 const titles = ["Weekly", "Monthly", "Yearly"];
 /**
  *
@@ -37,8 +37,15 @@ class Statistics extends Component {
       selectedIndex: new Animated.Value(0),
       tabSelected: true,
       index: 0,
-      statisticsData: []
+      statisticsData: [],
+      dateRange: "",
+      rangeStartDate: "",
+      rangeEndDate: "",
+      period: ""
     };
+    this.onNextPress = this.onNextPress.bind(this);
+    this.onPreviousPress = this.onPreviousPress.bind(this);
+    this.onSettingsPress = this.onSettingsPress.bind(this);
   }
 
   /**
@@ -84,7 +91,21 @@ class Statistics extends Component {
       toValue: index * (width / titles.length),
       duration: 150
     }).start();
+
     this.state.selectedIndex.setValue(presentIndex);
+    let period = "";
+    switch (presentIndex) {
+      case 1:
+        period = "month";
+        break;
+      case 2:
+        period = "year";
+        break;
+      default:
+        period = "week";
+    }
+    this.setState({ period });
+    this.initializeChart();
   };
 
   /**
@@ -93,11 +114,15 @@ class Statistics extends Component {
    * @memberof Statistics
    */
   initializeChart = () => {
-    const date = new Date();
-    const startDate = moment(date).format("DD MMM YYYY");
-    const nextWeekDay = Utilities.nextDay(startDate, "week");
-    const endDate = moment(nextWeekDay).format("DD MMM YYYY");
-    this.getChartData(startDate, endDate);
+    const date = moment(new Date()).format("DD MMM YYYY");
+    const startDate = moment(date).valueOf();
+    this.setState({ rangeStartDate: startDate }, () => {
+      const nextWeekDay = Utilities.nextDay(startDate, this.state.period);
+      const endDate = moment(nextWeekDay).valueOf();
+      this.setState({ rangeEndDate: endDate }, () => {
+        this.getChartData(this.state.rangeStartDate, this.state.rangeEndDate);
+      });
+    });
   };
 
   /**
@@ -107,17 +132,111 @@ class Statistics extends Component {
    * @param {*} endDate
    */
   getChartData = (startDate, endDate) => {
+    const dateFormat = this.state.period === "year" ? "MMM YYYY" : "MMM DD";
     fetchDataForDateRage(
       startDate,
       endDate,
       result => {
-        console.log("result", result);
-        this.setState({ statisticsData: result });
+        this.setState({
+          statisticsData:
+            result.length > 0 ? this.updateDataForStatistics(result) : [],
+          dateRange:
+            moment(new Date(startDate)).format(dateFormat) +
+            "-" +
+            moment(new Date(endDate)).format(dateFormat)
+        });
       },
-      error => {
-        // console.log(error, "error");
-      }
+      error => {}
     );
+  };
+
+  /**
+   * To change statistics data compatible to Bar chart
+   *
+   * @memberof Statistics
+   */
+  updateDataForStatistics = data => {
+    var newData = [data[0]];
+    data.forEach(column => {
+      var isExistedDate = false;
+      newData.forEach((item, index) => {
+        if (item.Animal.toLowerCase() === column.Animal.toLowerCase()) {
+          isExistedDate = true;
+          newData[index].Quantity =
+            parseInt(newData[index].Quantity) +
+            parseInt(column.Quantity.replace(/[^\d.]/g, ""));
+        }
+      });
+      if (!isExistedDate) {
+        const newObj = column;
+        newObj.Quantity = parseInt(column.Quantity.replace(/[^\d.]/g, ""));
+        newData.push(column);
+      }
+    });
+    return newData;
+  };
+
+  /**
+   * On next week/Month/Year press
+   *
+   * @memberof Statistics
+   */
+  onNextPress = () => {
+    let date = new Date(this.state.rangeEndDate);
+    const startDate = date.setDate(date.getDate() + 1);
+    const endDate = moment(
+      Utilities.nextDay(startDate, this.state.period)
+    ).valueOf();
+    this.setState({ rangeStartDate: startDate, rangeEndDate: endDate }, () => {
+      this.getChartData(this.state.rangeStartDate, this.state.rangeEndDate);
+    });
+  };
+
+  /**
+   * On previous week/Month/Year press
+   *
+   * @memberof Statistics
+   */
+  onPreviousPress = () => {
+    const startDate =
+      moment(
+        Utilities.nextDay(this.state.rangeStartDate, this.state.period, false)
+      ).valueOf() -
+      24 * 60 * 60 * 1000;
+    const endDate = moment(
+      Utilities.nextDay(startDate, this.state.period)
+    ).valueOf();
+    this.setState({ rangeStartDate: startDate, rangeEndDate: endDate }, () => {
+      this.getChartData(this.state.rangeStartDate, this.state.rangeEndDate);
+    });
+  };
+  //  modalPresentationStyle: 'overCurrentContext', // Supported styles are: 'formSheet', 'pageSheet', 'overFullScreen', 'overCurrentContext', 'currentContext', 'popOver', 'fullScreen' and 'none'. On Android, only overCurrentContext and none are supported.
+
+  onSettingsPress = () => {
+    Navigation.push("tabs", {
+      component: {
+        name: "settings",
+        animate: true,
+        options: {
+          screenBackgroundColor: "#ffffff",
+          layout: {
+            backgroundColor: "#ffffff"
+          },
+          topBar: {
+            visible: true,
+            animate: false, // Controls whether TopBar visibility changes should be animated
+            // hideOnScroll: true,
+            backButton: {
+              color: "#fff",
+              title: "Settings"
+            },
+            background: {
+              color: "#000"
+            }
+          }
+        }
+      }
+    });
   };
 
   /**
@@ -164,10 +283,14 @@ class Statistics extends Component {
             />
           </View>
         </View>
-        {this.state.statisticsData.length > 0 && (
-          <StatisticsView list={this.state.statisticsData} />
-        )}
-        <TouchableOpacity>
+
+        <StatisticsView
+          list={this.state.statisticsData}
+          dateRange={this.state.dateRange}
+          onNextPress={this.onNextPress}
+          onPreviousPress={this.onPreviousPress}
+        />
+        <TouchableOpacity onPress={this.onSettingsPress}>
           <Image source={{ uri: "settings" }} style={styles.settingsIcon} />
         </TouchableOpacity>
       </View>

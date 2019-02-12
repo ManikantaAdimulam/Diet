@@ -9,6 +9,7 @@ import {
   TouchableOpacity
 } from "react-native";
 import _ from "lodash";
+import moment from "moment";
 /**
  *
  *
@@ -23,7 +24,11 @@ class List extends Component {
    * @returns
    */
   renderSection = ({ section: { date } }) => {
-    return <Text style={styles.sectionHeader}>{date}</Text>;
+    return (
+      <Text style={styles.sectionHeader}>
+        {moment(date * 1000).format("DD MMM YYYY")}
+      </Text>
+    );
   };
 
   /**
@@ -76,9 +81,8 @@ class List extends Component {
   render() {
     const { list } = this.props;
     const sorted = list.sort(function(a, b) {
-      return new Date(a.date) - new Date(b.date);
+      return a.date - b.date;
     });
-
     return (
       <View style={styles.container}>
         <SectionList

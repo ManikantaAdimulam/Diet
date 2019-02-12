@@ -13,10 +13,11 @@ import {
 import { connect } from "react-redux";
 import SafeAreaWrapper from "../Components/SafeAreaWrapper";
 import { Navigation } from "react-native-navigation";
-import { addNewEntry } from "../Redux/Actions/Actions";
-import { insertData } from "../DataBase/SQLite";
+import { addNewEntry, editEntry } from "../Redux/Actions/Actions";
+import { insertData, updateData } from "../DataBase/SQLite";
 import { insertDataIntoDB, fetchFromDB } from "../ViewModals/DBViewModal";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scrollview";
+import moment from "moment";
 /**
  *
  *
@@ -33,7 +34,6 @@ class LogEntry extends Component {
     super(props);
     this.closeButton = this.closeButton.bind();
     const { Animal, Quantity, Time, date } = props.data;
-    // console.log(props.data);
     this.state = {
       top: new Animated.Value(height),
       animal: Animal || "",
@@ -86,20 +86,28 @@ class LogEntry extends Component {
    */
   onAddOrEditEntryClick = () => {
     let entry = { date: "", data: [] };
-    const { dispatch, data } = this.props;
-    entry.date = data.date;
+    const { dispatch, data, buttonTitle } = this.props;
+    entry.date = moment(data.date).valueOf() / 1000;
     var object = this.state.fields.reduce(
       (obj, item) => ((obj[item.key] = item.value), obj),
       {}
     );
-    // delete object.Date;
+    object.Date = moment(data.date).valueOf() / 1000;
     entry.data = [object];
-    insertDataIntoDB(entry, isSuccess => {
-      if (isSuccess) {
-        // fetchFromDB("", dispatch);
-        dispatch(addNewEntry(entry));
-      }
-    });
+    if (buttonTitle === "Save") {
+      updateData(entry, data.id, isSuccess => {
+        if (isSuccess) {
+          dispatch(editEntry(entry, data.id));
+        }
+      });
+    } else {
+      insertDataIntoDB(entry, isSuccess => {
+        if (isSuccess) {
+          // fetchFromDB("", dispatch);
+          dispatch(addNewEntry(entry));
+        }
+      });
+    }
   };
 
   /**
