@@ -9,7 +9,6 @@ import {
 } from "react-native";
 import { connect } from "react-redux";
 import SafeAreaWrapper from "../Components/SafeAreaWrapper";
-import { Navigation } from "react-native-navigation";
 import { tabs } from "../../index";
 /**
  *
@@ -45,7 +44,7 @@ class Introduction extends Component {
    */
   render() {
     return (
-      <SafeAreaWrapper style={{ backgroundColor: "#f4d766" }}>
+      <SafeAreaWrapper style={styles.container}>
         <Text style={styles.heading}>Meat Journal</Text>
         <Image
           source={require("../../Assets/meat_icon.png")}
@@ -62,14 +61,18 @@ class Introduction extends Component {
   }
 }
 
+///
 const mapStateToProps = state => ({
   default: state.reducer
 });
 
+///
 export default connect(mapStateToProps)(Introduction);
 
+///
 const { height, width } = Dimensions.get("window");
 
+///
 const styles = StyleSheet.create({
   container: {
     flex: 1,

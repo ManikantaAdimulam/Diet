@@ -8,7 +8,7 @@ import {
   Image,
   Animated,
   TextInput,
-  KeyboardAvoidingView
+  InteractionManager
 } from "react-native";
 import { connect } from "react-redux";
 import SafeAreaWrapper from "../Components/SafeAreaWrapper";
@@ -18,6 +18,8 @@ import { insertData, updateData } from "../DataBase/SQLite";
 import { insertDataIntoDB, fetchFromDB } from "../ViewModals/DBViewModal";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scrollview";
 import moment from "moment";
+import Picker from "react-native-picker";
+import _ from "lodash";
 /**
  *
  *
@@ -50,6 +52,7 @@ class LogEntry extends Component {
     };
     this.entryInput = this.entryInput.bind(this);
     this.onAddOrEditEntryClick = this.onAddOrEditEntryClick.bind(this);
+    this.editingDidBegin = this.editingDidBegin.bind(this);
   }
 
   /**
@@ -122,8 +125,40 @@ class LogEntry extends Component {
    *
    * @memberof LogEntry
    */
+  time = () => {
+    var arr = [];
+    var hours = [];
+    var mins = [];
+    var session = ["AM", "PM"];
+    for (i = 1; i <= 12; i++) {
+      hours.push(i);
+    }
+    for (var j = 0; j <= 60; j++) {
+      mins.push(("0" + j).slice(-2));
+    }
+    arr.push(hours, mins, session);
+    return arr;
+  };
+
+  /**
+   *
+   *
+   * @memberof LogEntry
+   */
+  weights = () => {
+    var arr = [];
+    for (i = 0; i <= 500; i++) {
+      arr.push(i * 5);
+    }
+    return arr;
+  };
+  /**
+   *
+   *
+   * @memberof LogEntry
+   */
   entryInput = (text, index) => {
-    this.state.fields[index].value = text;
+    this.state.fields[index].value = index === 2 ? text + "gm" : text;
     switch (index) {
       case 0:
         this.setState({ name: text });
@@ -132,7 +167,7 @@ class LogEntry extends Component {
         this.setState({ animal: text });
         break;
       case 2:
-        this.setState({ quantity: text });
+        this.setState({ quantity: text + "gm" });
         break;
       case 3:
         this.setState({ date: text });
@@ -142,6 +177,65 @@ class LogEntry extends Component {
         break;
       default:
         break;
+    }
+  };
+
+  editingDidBegin = ({ nativeEvent }, index) => {
+    Picker.hide();
+    let pickerData = [];
+    switch (index) {
+      case 0:
+        pickerData = [];
+        break;
+      case 1:
+        pickerData = ["Cow", "Pig", "Sheep", "Goat", "Chicken", "Default"];
+        break;
+      case 2:
+        pickerData = this.weights();
+        break;
+      case 3:
+        break;
+      case 4:
+        pickerData = this.time();
+        break;
+      default:
+        break;
+    }
+    // console.log(pickerData)
+    Picker.isPickerShow(isOpened => {
+      if (isOpened) {
+        Picker.hide();
+      }
+    });
+    if (pickerData.length > 0) {
+      Picker.init({
+        pickerData: pickerData,
+        pickerTitleText: "Please select",
+        onPickerConfirm: (pickedValue, pickedIndex) => {
+          const text =
+            pickedValue.length > 1
+              ? `${pickedValue[0]}` +
+                ":" +
+                `${pickedValue[1]}` +
+                ` ${pickedValue[2]}`
+              : `${pickedValue[0]}`;
+          this.entryInput(text, index);
+        },
+        onPickerCancel: (pickedValue, pickedIndex) => {
+          console.log("date", pickedValue, pickedIndex);
+        },
+        onPickerSelect: (pickedValue, pickedIndex) => {
+          const text =
+            pickedValue.length > 1
+              ? `${pickedValue[0]}` +
+                ":" +
+                `${pickedValue[1]}` +
+                ` ${pickedValue[2]}`
+              : `${pickedValue[0]}`;
+          this.entryInput(text, index);
+        }
+      });
+      Picker.show();
     }
   };
 
@@ -173,6 +267,7 @@ class LogEntry extends Component {
                 <FieldView
                   data={item}
                   onChangeText={this.entryInput}
+                  onFocus={this.editingDidBegin}
                   key={item.key}
                   index={index}
                 />
@@ -196,13 +291,14 @@ class LogEntry extends Component {
  * @param {*} { data }
  * @returns
  */
-const FieldView = ({ data, onChangeText, index }) => {
+const FieldView = ({ data, onChangeText, index, onFocus }) => {
   return (
     <View style={styles.fieldView}>
       <Text style={styles.fieldTitle}>{data.key}</Text>
       <TextInput
         style={styles.textInput}
         onChangeText={e => onChangeText(e, index)}
+        onFocus={e => onFocus(e, index)}
         value={data.value}
       />
     </View>

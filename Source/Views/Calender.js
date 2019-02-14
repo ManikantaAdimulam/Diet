@@ -99,7 +99,8 @@ class Calender extends Component {
    */
   render() {
     const { data } = this.props.list;
-    const today = moment(new Date()).format("DD MMM YYYY");
+    const date = new Date();
+    const today = moment(date).format("DD MMM YYYY");
     const list = data.filter(item => {
       return item.date * 1000 === moment(today).valueOf();
     });
