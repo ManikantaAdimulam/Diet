@@ -5,13 +5,28 @@ const EDIT_ENTRY = "EDIT_ENTRY";
 ///
 const INITIAL_DATA = "INITIAL_DATA";
 ///
+const UPDATE_SETTINGS = "UPDATE_SETTINGS";
+
+/**
+ *
+ *
+ * @param {*} entry
+ * @returns
+ */
 const addNewEntry = entry => {
   return {
     type: ADD_NEW_ENTRY,
     entry
   };
 };
-///
+
+/**
+ *
+ *
+ * @param {*} entry
+ * @param {*} index
+ * @returns
+ */
 const editEntry = (entry, index) => {
   return {
     type: EDIT_ENTRY,
@@ -19,11 +34,42 @@ const editEntry = (entry, index) => {
     index
   };
 };
-///
+
+/**
+ *
+ *
+ * @param {*} data
+ * @returns
+ */
 const setInitialData = data => {
   return {
     type: INITIAL_DATA,
     data
   };
 };
-export { ADD_NEW_ENTRY, EDIT_ENTRY, addNewEntry, editEntry, setInitialData };
+
+/**
+ *
+ *
+ * @param {*} key
+ * @param {*} value
+ * @returns
+ */
+const updateSettings = (key, value) => {
+  return {
+    type: UPDATE_SETTINGS,
+    key,
+    value
+  };
+};
+
+///
+export {
+  ADD_NEW_ENTRY,
+  EDIT_ENTRY,
+  UPDATE_SETTINGS,
+  addNewEntry,
+  editEntry,
+  setInitialData,
+  updateSettings
+};

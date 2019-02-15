@@ -1,5 +1,5 @@
 import { ADD_NEW_ENTRY, EDIT_ENTRY } from "../Actions/Actions";
-import moment from "moment";
+
 const initialState = { data: [] };
 
 export function listReducer(state = initialState, action) {
@@ -28,7 +28,6 @@ export function listReducer(state = initialState, action) {
           }
           return entry;
         })
-        //updateData(state.data, action.entry, action.index)
       };
     default:
       return { ...state };
@@ -62,9 +61,3 @@ function manipulate(previousData, newEntry) {
     return [newEntry];
   }
 }
-
-// function updateData(data, newEntry, index) {
-//   return data.map(entry=>{
-
-//   })
-// }

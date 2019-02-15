@@ -11,17 +11,14 @@ import { connect } from "react-redux";
 import SafeAreaWrapper from "../Components/SafeAreaWrapper";
 import MenuList from "../Components/Menu";
 
-const settingsOptions = [
-  { key: "Weight", value: "gm" },
-  { key: "Remainder", value: "9:00AM" },
-  { key: "Theme", value: "Dark" }
-];
-const viewOptions = [
-  { key: "Privacy Policy", value: "" },
-  { key: "Terms of Service", value: "" },
-  { key: "Contact Us", value: "" }
-];
-export class Settings extends Component {
+class Settings extends Component {
+  constructor(props) {
+    super(props);
+    this.callBack = this.callBack.bind(this);
+  }
+  callBack = (key, value) => {
+    console.log(key, value);
+  };
   /**
    * UI
    *
@@ -29,16 +26,18 @@ export class Settings extends Component {
    * @memberof Settings
    */
   render() {
+    const { settingsOptions, viewOptions } = this.props.settings;
+    console.log(this.props, "Settings");
     return (
       <View style={styles.container}>
-        <MenuList data={settingsOptions} />
-        <MenuList data={viewOptions} />
+        <MenuList data={settingsOptions} callBack={this.callBack} />
+        <MenuList data={viewOptions} callBack={this.callBack} />
       </View>
     );
   }
 }
 
-const mapStateToProps = state => ({});
+const mapStateToProps = state => ({ settings: state.SettingsReducer });
 
 export default connect(mapStateToProps)(Settings);
 
@@ -50,32 +49,4 @@ const styles = StyleSheet.create({
     paddingTop: 22,
     justifyContent: "space-evenly"
   }
-  //   item: {
-  //     padding: 8,
-  //     fontSize: 18,
-  //     height: 60,
-  //     flexDirection: "row"
-  //   },
-  //   separator: {
-  //     height: 1,
-  //     width,
-  //     backgroundColor: "lightgray"
-  //   },
-  //   cellTitle: {
-  //     fontSize: 16,
-  //     fontWeight: "bold"
-  //   },
-  //   cellSubTitle: {
-  //     fontSize: 14,
-  //     fontWeight: "400"
-  //   },
-  //   nextButton: {
-  //     height: 44,
-  //     width: 44,
-  //     resizeMode: "center"
-  //   },
-  //   optionsView: {
-  //     flex: 1,
-  //     justifyContent: "space-evenly"
-  //   }
 });

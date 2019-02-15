@@ -141,7 +141,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#000000"
   },
   buttonText: {
-    color: "#f4d766",
+    color: "#ffec60",
     fontSize: 25,
     fontWeight: "500"
   },
@@ -150,12 +150,12 @@ const styles = StyleSheet.create({
     height: 30
   },
   tabBarTextStyles: {
-    color: "#f4d766",
+    color: "#ffec60",
     fontSize: 17,
     top: -15
   },
   underlineStyles: {
-    backgroundColor: "#f4d766",
+    backgroundColor: "#ffec60",
     height: 4
   }
 });

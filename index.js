@@ -2,13 +2,8 @@
  * @format
  * @lint-ignore-every
  */
-
-// import {AppRegistry} from 'react-native';
-import App from "./App";
-// import {name as appName} from './app.json';
 import { Navigation } from "react-native-navigation";
 import registerScreens from "./Source/Utilities/Navigation";
-// AppRegistry.registerComponent(appName, () => App);
 
 registerScreens();
 
@@ -32,6 +27,27 @@ Navigation.events().registerAppLaunchedListener(() => {
       }
     }
   });
+  Navigation.setDefaultOptions({
+    topBar: {
+      visible: true
+    },
+    bottomTabs: {
+      barStyle: "black"
+    },
+    bottomTab: {
+      selectedTextColor: "#ffec60",
+      selectedIconColor: "#ffec60",
+      iconColor: "#fff",
+      textColor: "#fff",
+      fontSize: 12,
+      iconInsets: {
+        top: 2,
+        left: 2,
+        right: 2,
+        bottom: 2
+      }
+    }
+  });
 });
 
 export const tabs = () => {
@@ -50,9 +66,7 @@ export const tabs = () => {
                       bottomTab: {
                         text: "Log Book",
                         icon: { uri: "logs" },
-                        testID: "FIRST",
-                        selectedTextColor: "red",
-                        selectedIconColor: "red"
+                        testID: "FIRST"
                       }
                     }
                   }
@@ -64,9 +78,7 @@ export const tabs = () => {
                       bottomTab: {
                         text: "Statistics",
                         icon: { uri: "statistics" },
-                        testID: "SECOND",
-                        selectedTextColor: "red",
-                        selectedIconColor: "red"
+                        testID: "SECOND"
                       }
                     }
                   }
@@ -89,6 +101,9 @@ export const tabs = () => {
   Navigation.setDefaultOptions({
     topBar: {
       visible: true
+    },
+    bottomTabs: {
+      barStyle: "black"
     }
   });
 };

@@ -1,6 +1,12 @@
-import moment from "moment";
-
 export const Utilities = {
+  /**
+   *
+   *
+   * @param {*} date
+   * @param {*} period
+   * @param {boolean} [next=true]
+   * @returns
+   */
   nextDay: (date, period, next = true) => {
     var firstDay = new Date(date);
     let periodValue;
@@ -26,13 +32,33 @@ export const Utilities = {
   }
 };
 
-///
+/**
+ *
+ *
+ * @param {*} date
+ * @returns
+ */
 const getMonthDays = date => {
   var d = new Date(date.getFullYear(), date.getMonth() + 1, 0);
   return d.getDate();
 };
 
-///
+/**
+ *
+ *
+ * @param {*} year
+ * @returns
+ */
 const leapYear = year => {
   return year % 100 === 0 ? year % 400 === 0 : year % 4 === 0;
+};
+
+export const Theme = {
+  dark: "Dark",
+  light: "Light"
+};
+
+export const Weight = {
+  grams: "gm",
+  kilograms: "kg"
 };

@@ -152,6 +152,7 @@ class LogEntry extends Component {
     }
     return arr;
   };
+
   /**
    *
    *
@@ -180,8 +181,13 @@ class LogEntry extends Component {
     }
   };
 
+  /**
+   *
+   *
+   * @param {*} { nativeEvent }
+   * @param {*} index
+   */
   editingDidBegin = ({ nativeEvent }, index) => {
-    Picker.hide();
     let pickerData = [];
     switch (index) {
       case 0:
@@ -201,7 +207,6 @@ class LogEntry extends Component {
       default:
         break;
     }
-    // console.log(pickerData)
     Picker.isPickerShow(isOpened => {
       if (isOpened) {
         Picker.hide();
@@ -211,6 +216,14 @@ class LogEntry extends Component {
       Picker.init({
         pickerData: pickerData,
         pickerTitleText: "Please select",
+        pickerTitleColor: [255, 236, 96, 1],
+        pickerToolBarFontSize: 16,
+        pickerFontSize: 16,
+        pickerBg: [100, 100, 100, 1],
+        pickerCancelBtnColor: [255, 255, 255, 1],
+        pickerConfirmBtnColor: [255, 255, 255, 1],
+        pickerToolBarBg: [120, 120, 120, 1],
+        pickerFontColor: [255, 236, 96, 1],
         onPickerConfirm: (pickedValue, pickedIndex) => {
           const text =
             pickedValue.length > 1
@@ -221,18 +234,16 @@ class LogEntry extends Component {
               : `${pickedValue[0]}`;
           this.entryInput(text, index);
         },
-        onPickerCancel: (pickedValue, pickedIndex) => {
-          console.log("date", pickedValue, pickedIndex);
-        },
+        onPickerCancel: (pickedValue, pickedIndex) => {},
         onPickerSelect: (pickedValue, pickedIndex) => {
-          const text =
-            pickedValue.length > 1
-              ? `${pickedValue[0]}` +
-                ":" +
-                `${pickedValue[1]}` +
-                ` ${pickedValue[2]}`
-              : `${pickedValue[0]}`;
-          this.entryInput(text, index);
+          // const text =
+          //   pickedValue.length > 1
+          //     ? `${pickedValue[0]}` +
+          //       ":" +
+          //       `${pickedValue[1]}` +
+          //       ` ${pickedValue[2]}`
+          //     : `${pickedValue[0]}`;
+          // this.entryInput(text, index);
         }
       });
       Picker.show();

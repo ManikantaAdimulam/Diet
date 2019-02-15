@@ -66,7 +66,7 @@ function Labels({ x, y, bandwidth, data }) {
 function totalWeightConsumed(data) {
   let consumedWeight = 0;
   if (data.length > 0) {
-    data.map(item => {
+    data.forEach(item => {
       consumedWeight += item.Quantity;
     });
   }

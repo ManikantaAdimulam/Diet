@@ -191,12 +191,6 @@ const styles = StyleSheet.create({
     height: height * 0.6,
     backgroundColor: "red"
   },
-  text: {
-    textAlign: "center",
-    borderColor: "#bbb",
-    padding: 10,
-    backgroundColor: "#eee"
-  },
   container: {
     flex: 1
   }

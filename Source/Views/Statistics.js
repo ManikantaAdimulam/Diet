@@ -321,7 +321,7 @@ const styles = StyleSheet.create({
   },
   underLayer: {
     height: 4,
-    backgroundColor: "#f4d766"
+    backgroundColor: "#ffec60"
   },
   settingsIcon: {
     height: 50,

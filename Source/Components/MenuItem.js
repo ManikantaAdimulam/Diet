@@ -16,7 +16,7 @@ const MenuItem = ({ item, index, onPress, isSelected }) => {
       <View style={styles.menuItem}>
         <Text
           style={{
-            color: isSelected === index ? "#f4d766" : "#fff",
+            color: isSelected === index ? "#ffec60" : "#fff",
             fontWeight: isSelected === index ? "800" : "bold",
             fontSize: isSelected === index ? 16 : 14
           }}

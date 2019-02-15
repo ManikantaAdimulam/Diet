@@ -17,15 +17,6 @@ import { tabs } from "../../index";
  * @extends {Component}
  */
 class Introduction extends Component {
-  /**
-   *Creates an instance of Introduction.
-   * @param {*} props
-   * @memberof Introduction
-   */
-  constructor(props) {
-    super(props);
-  }
-
   // MARK: - Actions
   /**
    * Navigate to dash board.
@@ -76,7 +67,7 @@ const { height, width } = Dimensions.get("window");
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#f4d766",
+    backgroundColor: "#ffec60",
     justifyContent: "center",
     alignItems: "center"
   },
