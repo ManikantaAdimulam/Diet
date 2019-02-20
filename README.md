@@ -1,10 +1,10 @@
 # Diet
 **Diet :**
+
     A small appliction to maintain diet consumption and statistics for the consumption. This app build in react-native,
 An open source framework for hybrid mobile applications, Designed by Facebook.
 
 **Libraries:**
-
 1. React
 
 2.React-Native 
