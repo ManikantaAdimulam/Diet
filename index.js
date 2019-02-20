@@ -18,7 +18,9 @@ Navigation.events().registerAppLaunchedListener(() => {
               name: "WelcomeScreen",
               options: {
                 topBar: {
-                  visible: false
+                  visible: false,
+                  elevation: 0,
+                  noBorder: true
                 }
               }
             }
@@ -29,16 +31,18 @@ Navigation.events().registerAppLaunchedListener(() => {
   });
   Navigation.setDefaultOptions({
     topBar: {
-      visible: true
+      visible: true,
+      elevation: 0,
+      noBorder: true
     },
     bottomTabs: {
-      barStyle: "black"
+      barStyle: "default"
     },
     bottomTab: {
-      selectedTextColor: "#ffec60",
-      selectedIconColor: "#ffec60",
-      iconColor: "#fff",
-      textColor: "#fff",
+      selectedTextColor: "red",
+      selectedIconColor: "red",
+      iconColor: "#000",
+      textColor: "#000",
       fontSize: 12,
       iconInsets: {
         top: 2,
@@ -87,23 +91,17 @@ export const tabs = () => {
               options: {
                 topBar: {
                   visible: true,
+                  elevation: 0,
                   background: {
                     color: "#000"
-                  }
+                  },
+                  noBorder: true
                 }
               }
             }
           }
         ]
       }
-    }
-  });
-  Navigation.setDefaultOptions({
-    topBar: {
-      visible: true
-    },
-    bottomTabs: {
-      barStyle: "black"
     }
   });
 };

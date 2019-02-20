@@ -73,7 +73,9 @@ class Calender extends Component {
           },
           topBar: {
             visible: false,
-            animate: true
+            animate: true,
+            elevation: 0,
+            noBorder: true
           }
         }
       }

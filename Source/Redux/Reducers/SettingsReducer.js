@@ -19,6 +19,14 @@ const initialState = {
   }
 };
 
+/**
+ * Settings Reducer.
+ *
+ * @export
+ * @param {*} [state=initialState]
+ * @param {*} action
+ * @returns
+ */
 export function SettingsReducer(state = initialState, action) {
   if ((action.type = UPDATE_SETTINGS)) {
     return {
@@ -31,7 +39,11 @@ export function SettingsReducer(state = initialState, action) {
           };
         }
         return item;
-      })
+      }),
+      Settings: {
+        ...state.Settings,
+        [action.key]: action.value
+      }
     };
   }
   return state;

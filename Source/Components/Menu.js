@@ -18,6 +18,12 @@ import { updateSettings } from "../Redux/Actions/Actions";
  * @returns
  */
 class MenuList extends PureComponent {
+  /**
+   * UI
+   *
+   * @returns
+   * @memberof MenuList
+   */
   render() {
     const { data } = this.props;
     return (
@@ -55,7 +61,12 @@ class MenuList extends PureComponent {
       </TouchableOpacity>
     );
   };
-  ///
+
+  /**
+   * To form time list
+   *
+   * @memberof MenuList
+   */
   time = () => {
     var arr = [];
     var hours = [];
@@ -71,9 +82,14 @@ class MenuList extends PureComponent {
     return arr;
   };
 
-  ///
+  /**
+   * To open picker with particular key data.
+   *
+   * @param {*} key
+   * @returns
+   */
   openPicker = key => {
-    const { updateSettingValue } = this.props;
+    const { updateSettingValue, callBack } = this.props;
     let pickerData = [];
     switch (key) {
       case "Weight":
@@ -91,6 +107,7 @@ class MenuList extends PureComponent {
     Picker.init({
       pickerData: pickerData,
       pickerTitleText: "Please select",
+      pickerConfirmBtnText: "Done",
       pickerTitleColor: [255, 236, 96, 1],
       pickerToolBarFontSize: 16,
       pickerFontSize: 16,
@@ -108,6 +125,9 @@ class MenuList extends PureComponent {
           value += `${pickedValue[0]}`;
         }
         updateSettingValue(key, value);
+        if (key === "Theme") {
+          callBack(key, value);
+        }
       },
       onPickerCancel: (pickedValue, pickedIndex) => {},
       onPickerSelect: (pickedValue, pickedIndex) => {}
@@ -147,14 +167,20 @@ const styles = StyleSheet.create({
     justifyContent: "space-evenly"
   }
 });
-
+///
 const { height, width } = Dimensions.get("window");
+
+///
 const mapDispatchToProps = dispatch => ({
   updateSettingValue: (key, value) => {
     dispatch(updateSettings(key, value));
   }
 });
+
+///
+const mapStateToProps = state => ({ settings: state.SettingsReducer });
+///
 export default connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps
 )(MenuList);

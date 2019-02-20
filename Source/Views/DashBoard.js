@@ -1,10 +1,11 @@
-import React, { Component } from "react";
+import React, { PureComponent } from "react";
 import {
   View,
   Text,
   TouchableOpacity,
   StyleSheet,
-  Dimensions
+  Dimensions,
+  Alert
 } from "react-native";
 import { connect } from "react-redux";
 import ScrollableTabView, {
@@ -14,6 +15,7 @@ import Calender from "./Calender";
 import ConsumptionList from "./ConsumptionList";
 import { fetchDataFromDB } from "../DataBase/SQLite";
 import { setInitialData, addNewEntry } from "../Redux/Actions/Actions";
+import { Navigation } from "react-native-navigation";
 const { width } = Dimensions.get("window");
 /**
  *
@@ -21,7 +23,7 @@ const { width } = Dimensions.get("window");
  * @class DashBoard
  * @extends {Component}
  */
-class DashBoard extends Component {
+class DashBoard extends PureComponent {
   /**
    * Creates an instance of DashBoard.
    * @param {*} props
@@ -32,6 +34,7 @@ class DashBoard extends Component {
     this.state = {
       selected: 0
     };
+    Navigation.events().bindComponent(this);
   }
 
   /**
@@ -80,6 +83,7 @@ class DashBoard extends Component {
    * @memberof DashBoard
    */
   render() {
+    const { Settings } = this.props;
     return (
       <View flex={1}>
         <ScrollableTabView
@@ -87,9 +91,25 @@ class DashBoard extends Component {
           page={this.state.selected}
           renderTabBar={() => (
             <ScrollableTabBar
-              style={styles.scrollableTabBar}
-              textStyle={styles.tabBarTextStyles}
-              underlineStyle={styles.underlineStyles}
+              style={[
+                styles.scrollableTabBar,
+                {
+                  backgroundColor: Settings.Theme === "Dark" ? "#000" : "#fff"
+                }
+              ]}
+              textStyle={[
+                styles.tabBarTextStyles,
+                {
+                  color: Settings.Theme === "Dark" ? "#ffec60" : "#000"
+                }
+              ]}
+              underlineStyle={[
+                styles.underlineStyles,
+                {
+                  backgroundColor:
+                    Settings.Theme === "Dark" ? "#ffec60" : "#000"
+                }
+              ]}
             />
           )}
         >
@@ -117,10 +137,12 @@ class DashBoard extends Component {
  *
  * @param {*} state
  */
-const mapStateToProps = state => ({});
+const mapStateToProps = state => ({ ...state.SettingsReducer });
 
+////
 export default connect(mapStateToProps)(DashBoard);
 
+///
 const styles = StyleSheet.create({
   floatingButtonView: {
     borderRadius: 25,
@@ -146,13 +168,11 @@ const styles = StyleSheet.create({
     fontWeight: "500"
   },
   scrollableTabBar: {
-    backgroundColor: "#000000",
-    height: 30
+    height: 40
   },
   tabBarTextStyles: {
-    color: "#ffec60",
     fontSize: 17,
-    top: -15
+    top: -5
   },
   underlineStyles: {
     backgroundColor: "#ffec60",

@@ -10,6 +10,8 @@ import {
 } from "react-native";
 import _ from "lodash";
 import moment from "moment";
+import { connect } from "react-redux";
+import { SettingsReducer } from "../Redux/Reducers/SettingsReducer";
 /**
  *
  *
@@ -92,12 +94,16 @@ class List extends Component {
             return this.renderItem(item);
           }}
           keyExtractor={this.keyExtractor}
+          bounces={false}
         />
       </View>
     );
   }
 }
-export default List;
+///
+const mapStateToProps = state => ({ settings: state.SettingsReducer });
+///
+export default connect(mapStateToProps)(List);
 ///
 const { height, width } = Dimensions.get("window");
 ///

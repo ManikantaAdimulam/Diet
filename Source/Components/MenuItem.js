@@ -4,19 +4,23 @@ import {
   View,
   StyleSheet,
   Dimensions,
-  TouchableOpacity,
-  Animated,
-  FlatList,
-  InteractionManager
+  TouchableOpacity
 } from "react-native";
+import { connect } from "react-redux";
 
-const MenuItem = ({ item, index, onPress, isSelected }) => {
+/**
+ * Menu item with defined parameters.
+ *
+ * @param {*} { item, index, onPress, isSelected, Settings }
+ * @returns
+ */
+const MenuItem = ({ item, index, onPress, isSelected, Settings }) => {
   return (
     <TouchableOpacity onPress={onPress}>
       <View style={styles.menuItem}>
         <Text
           style={{
-            color: isSelected === index ? "#ffec60" : "#fff",
+            color: Settings.Theme === "Dark" ? "#ffec60" : "#000",
             fontWeight: isSelected === index ? "800" : "bold",
             fontSize: isSelected === index ? 16 : 14
           }}
@@ -27,16 +31,17 @@ const MenuItem = ({ item, index, onPress, isSelected }) => {
     </TouchableOpacity>
   );
 };
-
+///
 const { height, width } = Dimensions.get("window");
-
+///
 const styles = StyleSheet.create({
   menuItem: {
-    // flex: 1,
     height: 40,
     justifyContent: "center",
     alignItems: "center"
   }
 });
-
-export default MenuItem;
+///
+const mapStateToProps = state => ({ ...state.SettingsReducer });
+///
+export default connect(mapStateToProps)(MenuItem);

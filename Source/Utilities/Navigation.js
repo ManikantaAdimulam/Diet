@@ -15,24 +15,28 @@ const Store = store();
 
 ///
 const registerScreens = () => {
+  ///
   Navigation.registerComponentWithRedux(
     "WelcomeScreen",
     () => App,
     Provider,
     Store
   );
+  ///
   Navigation.registerComponentWithRedux(
     "introduction",
     () => Introduction,
     Provider,
     Store
   );
+  ///
   Navigation.registerComponentWithRedux(
     "dashboard",
     () => DashBoard,
     Provider,
     Store
   );
+  ///
   Navigation.registerComponentWithRedux(
     "logbook",
     () => ConsumptionList,
@@ -45,18 +49,21 @@ const registerScreens = () => {
     Provider,
     Store
   );
+  ///
   Navigation.registerComponentWithRedux(
     "statistics",
     () => Statistics,
     Provider,
     Store
   );
+  ///
   Navigation.registerComponentWithRedux(
     "logEntry",
     () => LogEntry,
     Provider,
     Store
   );
+  ///
   Navigation.registerComponentWithRedux(
     "settings",
     () => Settings,

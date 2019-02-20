@@ -7,15 +7,13 @@ import {
   TouchableOpacity,
   Image,
   Animated,
-  TextInput,
-  InteractionManager
+  TextInput
 } from "react-native";
 import { connect } from "react-redux";
-import SafeAreaWrapper from "../Components/SafeAreaWrapper";
 import { Navigation } from "react-native-navigation";
 import { addNewEntry, editEntry } from "../Redux/Actions/Actions";
-import { insertData, updateData } from "../DataBase/SQLite";
-import { insertDataIntoDB, fetchFromDB } from "../ViewModals/DBViewModal";
+import { updateData } from "../DataBase/SQLite";
+import { insertDataIntoDB } from "../ViewModals/DBViewModal";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scrollview";
 import moment from "moment";
 import Picker from "react-native-picker";
@@ -106,7 +104,6 @@ class LogEntry extends Component {
     } else {
       insertDataIntoDB(entry, isSuccess => {
         if (isSuccess) {
-          // fetchFromDB("", dispatch);
           dispatch(addNewEntry(entry));
         }
       });
@@ -159,7 +156,12 @@ class LogEntry extends Component {
    * @memberof LogEntry
    */
   entryInput = (text, index) => {
-    this.state.fields[index].value = index === 2 ? text + "gm" : text;
+    const { Settings } = this.props;
+    const weightUnits =
+      Settings.Weight === "gm" && index === 2
+        ? text + "gm"
+        : parseInt(text) / 1000 + "kg";
+    this.state.fields[index].value = index === 2 ? weightUnits : text;
     switch (index) {
       case 0:
         this.setState({ name: text });
@@ -216,6 +218,7 @@ class LogEntry extends Component {
       Picker.init({
         pickerData: pickerData,
         pickerTitleText: "Please select",
+        pickerConfirmBtnText: "Done",
         pickerTitleColor: [255, 236, 96, 1],
         pickerToolBarFontSize: 16,
         pickerFontSize: 16,
@@ -235,16 +238,7 @@ class LogEntry extends Component {
           this.entryInput(text, index);
         },
         onPickerCancel: (pickedValue, pickedIndex) => {},
-        onPickerSelect: (pickedValue, pickedIndex) => {
-          // const text =
-          //   pickedValue.length > 1
-          //     ? `${pickedValue[0]}` +
-          //       ":" +
-          //       `${pickedValue[1]}` +
-          //       ` ${pickedValue[2]}`
-          //     : `${pickedValue[0]}`;
-          // this.entryInput(text, index);
-        }
+        onPickerSelect: (pickedValue, pickedIndex) => {}
       });
       Picker.show();
     }
@@ -315,12 +309,16 @@ const FieldView = ({ data, onChangeText, index, onFocus }) => {
     </View>
   );
 };
+
 ///
-const mapStateToProps = state => ({});
+const mapStateToProps = state => ({ ...state.SettingsReducer });
+
 ///
 export default connect(mapStateToProps)(LogEntry);
+
 ///
 const { height, width } = Dimensions.get("window");
+
 ///
 const styles = StyleSheet.create({
   container: {

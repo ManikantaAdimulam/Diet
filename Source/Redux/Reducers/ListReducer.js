@@ -2,6 +2,14 @@ import { ADD_NEW_ENTRY, EDIT_ENTRY } from "../Actions/Actions";
 
 const initialState = { data: [] };
 
+/**
+ * List reducer
+ *
+ * @export
+ * @param {*} [state=initialState]
+ * @param {*} action
+ * @returns
+ */
 export function listReducer(state = initialState, action) {
   switch (action.type) {
     case ADD_NEW_ENTRY:

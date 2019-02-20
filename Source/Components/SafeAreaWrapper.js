@@ -1,6 +1,12 @@
 import React from "react";
 import { StyleSheet, Dimensions, SafeAreaView, View } from "react-native";
 
+/**
+ * Safe area wrapper
+ *
+ * @param {*} { children, style }
+ * @returns
+ */
 const SafeAreaWrapper = ({ children, style }) => {
   return (
     <View style={[styles.container, style]}>
@@ -8,8 +14,11 @@ const SafeAreaWrapper = ({ children, style }) => {
     </View>
   );
 };
+
+///
 const { height, width } = Dimensions.get("window");
 
+///
 const styles = StyleSheet.create({
   container: {
     flex: 1,

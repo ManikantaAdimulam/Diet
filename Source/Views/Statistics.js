@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { PureComponent } from "react";
 import {
   View,
   Text,
@@ -23,7 +23,7 @@ const titles = ["Weekly", "Monthly", "Yearly"];
  * @class Statistics
  * @extends {Component}
  */
-class Statistics extends Component {
+class Statistics extends PureComponent {
   /**
    * Creates an instance of Statistics.
    * @param {*} props
@@ -137,6 +137,7 @@ class Statistics extends Component {
       startDate,
       endDate,
       result => {
+        console.log("Statistics", result);
         this.setState({
           statisticsData:
             result.length > 0 ? this.updateDataForStatistics(result) : [],
@@ -213,6 +214,7 @@ class Statistics extends Component {
   //  modalPresentationStyle: 'overCurrentContext', // Supported styles are: 'formSheet', 'pageSheet', 'overFullScreen', 'overCurrentContext', 'currentContext', 'popOver', 'fullScreen' and 'none'. On Android, only overCurrentContext and none are supported.
 
   onSettingsPress = () => {
+    const { Settings } = this.props;
     Navigation.push("tabs", {
       component: {
         name: "settings",
@@ -227,11 +229,11 @@ class Statistics extends Component {
             animate: false, // Controls whether TopBar visibility changes should be animated
             // hideOnScroll: true,
             backButton: {
-              color: "#fff",
+              color: Settings.Theme === "Dark" ? "#fff" : "#000",
               title: "Settings"
             },
             background: {
-              color: "#000"
+              color: Settings.Theme === "Dark" ? "#000" : "#fff"
             }
           }
         }
@@ -246,6 +248,7 @@ class Statistics extends Component {
    * @memberof Statistics
    */
   render() {
+    const { Settings } = this.props;
     return (
       <View style={styles.container}>
         <View>
@@ -256,7 +259,11 @@ class Statistics extends Component {
                   <View
                     style={[
                       styles.scrollableTabBar,
-                      { width: width / titles.length }
+                      {
+                        width: width / titles.length,
+                        backgroundColor:
+                          Settings.Theme === "Dark" ? "#000" : "#fff"
+                      }
                     ]}
                     key={index.toString()}
                   >
@@ -277,7 +284,9 @@ class Statistics extends Component {
                 styles.underLayer,
                 {
                   marginLeft: this.state.left,
-                  width: width / titles.length
+                  width: width / titles.length,
+                  backgroundColor:
+                    Settings.Theme === "Dark" ? "#ffec60" : "#000"
                 }
               ]}
             />
@@ -298,7 +307,10 @@ class Statistics extends Component {
   }
 }
 
-const mapStateToProps = state => ({ list: state.listReducer });
+const mapStateToProps = state => ({
+  list: state.listReducer,
+  ...state.SettingsReducer
+});
 
 export default connect(mapStateToProps)(Statistics);
 ///
@@ -310,18 +322,17 @@ const styles = StyleSheet.create({
     alignItems: "flex-end"
   },
   scrollableTabBar: {
-    backgroundColor: "#000000",
-    height: 40
+    height: 40,
+    borderBottomWidth: 0.8,
+    borderColor: "#00000050"
   },
   menuBarItemsView: {
     height: 36,
     width,
-    backgroundColor: "#000",
     flexDirection: "row"
   },
   underLayer: {
-    height: 4,
-    backgroundColor: "#ffec60"
+    height: 4
   },
   settingsIcon: {
     height: 50,

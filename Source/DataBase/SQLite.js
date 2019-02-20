@@ -122,7 +122,9 @@ function fetchDataFromDB(date, success, failure) {
  */
 function fetchData(query, success, failure) {
   db.transaction(tx => {
+    console.log("*********", query, "*********");
     tx.executeSql(query, [], (tx, result) => {
+      console.log("********", result.rows.raw(), "********");
       if (result.error === undefined) {
         success(result.rows.raw());
       } else {
@@ -131,6 +133,8 @@ function fetchData(query, success, failure) {
     });
   });
 }
+
+///
 export {
   createDataBase,
   createTable,

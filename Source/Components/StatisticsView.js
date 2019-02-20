@@ -101,7 +101,8 @@ const StatisticsView = ({
   list,
   dateRange,
   onPreviousPress,
-  onNextPress
+  onNextPress,
+  Settings
 }) => {
   return (
     <View style={styles.container}>
@@ -117,7 +118,7 @@ const StatisticsView = ({
       <View style={styles.dataView}>
         <Text style={styles.consumedText}>Weight consumed</Text>
         <Text style={styles.consumedValuedText}>
-          {totalWeightConsumed(list)}gm
+          {`${totalWeightConsumed(list)} ${Settings.Weight}`}
         </Text>
       </View>
       <View style={styles.barChart}>
@@ -144,12 +145,19 @@ const StatisticsView = ({
     </View>
   );
 };
+
 ///
-const mapStateToProps = state => ({ totalData: state.listReducer });
+const mapStateToProps = state => ({
+  totalData: state.listReducer,
+  ...state.SettingsReducer
+});
+
 ///
 export default connect(mapStateToProps)(StatisticsView);
+
 ///
 const { width, height } = Dimensions.get("window");
+
 ///
 const styles = StyleSheet.create({
   container: {
