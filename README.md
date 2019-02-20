@@ -6,6 +6,7 @@ An open source framework for hybrid mobile applications, Designed by Facebook.
 ![Alt text](./Assets/meat_icon.png?raw=true)
 
 # Libraries: 
+
 1. React
 
  2.React-Native 
@@ -43,7 +44,7 @@ An open source framework for hybrid mobile applications, Designed by Facebook.
 
 # How to start:
 
- 1. Clone or Download repository.
+1. Clone or Download repository.
 
  2. npm install or yarn install in roo directory
 
