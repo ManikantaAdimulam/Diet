@@ -1,5 +1,6 @@
 # Diet
-    A small appliction to maintain diet consumption and statistics for the consumption. This app build in react-native,
+
+ A small appliction to maintain diet consumption and statistics for the consumption. This app build in react-native,
 An open source framework for hybrid mobile applications, Designed by Facebook.
 
 ![Alt text](./Assets/meat_icon.png?raw=true)
