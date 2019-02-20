@@ -4,7 +4,7 @@
 An open source framework for hybrid mobile applications, Designed by Facebook.
 
 **Libraries:**
-1. React
+1. React\n
 2.React-Native
 3.Lodash
 4.Moment
