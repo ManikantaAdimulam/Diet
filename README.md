@@ -3,8 +3,8 @@
     A small appliction to maintain diet consumption and statistics for the consumption. This app build in react-native,
 An open source framework for hybrid mobile applications, Designed by Facebook.
 
+![Alt text](./Assets/meat_icon.png?raw=true)
 **Libraries:**
-
 
 1. React
 
@@ -28,7 +28,6 @@ An open source framework for hybrid mobile applications, Designed by Facebook.
 
 11.redux-thunk 
 
-![Alt text](./Assets/meat_icon.png?raw=true)
 
 **Concepts used in application :**
 
