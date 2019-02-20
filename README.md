@@ -7,7 +7,7 @@ An open source framework for hybrid mobile applications, Designed by Facebook.
 
 # Libraries: 
 
-1. React
+ 1. React
 
  2.React-Native 
 
@@ -32,7 +32,7 @@ An open source framework for hybrid mobile applications, Designed by Facebook.
 
 # Concepts used in application :
 
-1.Date converstions using moment. 
+ 1.Date converstions using moment. 
 
  2.Date range caliculations. 
 
@@ -43,11 +43,8 @@ An open source framework for hybrid mobile applications, Designed by Facebook.
  5.Reducx immutablity update pattrens etc.. 
 
 # How to start:
-
-1. Clone or Download repository.
-
- 2. npm install or yarn install in roo directory
-
- 3.react-native run-ios (or) react-native run-android
+ - 1. Clone or Download repository.
+ - 2. npm install or yarn install in roo directory
+ - 3.react-native run-ios (or) react-native run-android
 
 **Note:-** This application not tested in android till now.
