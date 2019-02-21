@@ -3,15 +3,13 @@
  A small appliction to maintain diet consumption and statistics for the consumption. This app build in react-native,
 An open source framework for hybrid mobile applications, Designed by Facebook.
 
-<img src="./ScreenShots/Introduction.png?raw=true" width="48">
-
-![Alt Text](./ScreenShots/Introduction.png?raw=true)
-![Alt Text](./ScreenShots/Consumption.png?raw=true)
-![Alt Text](./ScreenShots/Calender.png?raw=true)
-![Alt Text](./ScreenShots/EntryLog.png?raw=true)
-![Alt Text](./ScreenShots/Statistics.png?raw=true)
-![Alt Text](./ScreenShots/Settings.png?raw=true)
-![Alt Text](./ScreenShots/Picker.png?raw=true)
+<img src="./ScreenShots/Introduction.png?raw=true" width="100">
+<img src="./ScreenShots/Consumption.png?raw=true" width="100">
+<img src="./ScreenShots/Calender.png?raw=true" width="100">
+<img src="./ScreenShots/EntryLog.png?raw=true" width="100">
+<img src="./ScreenShots/Statistics.png?raw=true" width="100">
+<img src="./ScreenShots/Settings.png?raw=true" width="100">
+<img src="./ScreenShots/Picker.png?raw=true" width="100">
 
 # Libraries: 
  * React
