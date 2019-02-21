@@ -196,7 +196,17 @@ class LogEntry extends Component {
         pickerData = [];
         break;
       case 1:
-        pickerData = ["Cow", "Pig", "Sheep", "Goat", "Chicken", "Default"];
+        pickerData = [
+          "Cow",
+          "Pig",
+          "Sheep",
+          "Goat",
+          "Chicken",
+          "Duck",
+          "Lamb",
+          "Horse",
+          "Default"
+        ];
         break;
       case 2:
         pickerData = this.weights();

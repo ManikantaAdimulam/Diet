@@ -9,6 +9,7 @@ import Calender from "../Views/Calender";
 import Statistics from "../Views/Statistics";
 import LogEntry from "../Views/LogEntry";
 import Settings from "../Views/Settings";
+import ContentView from "../Views/WebView";
 
 ///
 const Store = store();
@@ -67,6 +68,13 @@ const registerScreens = () => {
   Navigation.registerComponentWithRedux(
     "settings",
     () => Settings,
+    Provider,
+    Store
+  );
+  ///
+  Navigation.registerComponentWithRedux(
+    "webview",
+    () => ContentView,
     Provider,
     Store
   );

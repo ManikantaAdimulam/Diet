@@ -34,7 +34,6 @@ class DashBoard extends PureComponent {
     this.state = {
       selected: 0
     };
-    Navigation.events().bindComponent(this);
   }
 
   /**
@@ -89,6 +88,9 @@ class DashBoard extends PureComponent {
         <ScrollableTabView
           initialPage={0}
           page={this.state.selected}
+          onChangeTab={tab => {
+            this.setState({ selected: tab.i });
+          }}
           renderTabBar={() => (
             <ScrollableTabBar
               style={[

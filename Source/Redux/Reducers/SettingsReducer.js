@@ -1,5 +1,5 @@
 import { UPDATE_SETTINGS } from "../Actions/Actions";
-import { Theme, Weight } from "../../Utilities/Utilities";
+import { Theme, Weight } from "../../Utilities/Constants";
 
 const initialState = {
   settingsOptions: [

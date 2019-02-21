@@ -11,6 +11,8 @@ import {
 import Picker from "react-native-picker";
 import { connect } from "react-redux";
 import { updateSettings } from "../Redux/Actions/Actions";
+import { Navigation } from "react-native-navigation";
+import { Constants } from "../Utilities/Constants";
 /**
  * Menu
  *
@@ -48,7 +50,7 @@ class MenuList extends PureComponent {
     return (
       <TouchableOpacity
         onPress={() => {
-          this.openPicker(key);
+          this.onClickSettings(key);
         }}
       >
         <View style={styles.item}>
@@ -82,6 +84,76 @@ class MenuList extends PureComponent {
     return arr;
   };
 
+  /**
+   * On clicking settings cell.
+   *
+   * @memberof MenuList
+   */
+  onClickSettings = key => {
+    switch (key) {
+      case "Weight":
+        this.openPicker(key);
+        return;
+      case "Remainder":
+        this.openPicker(key);
+        return;
+      case "Theme":
+        this.openPicker(key);
+        return;
+      case "Privacy Policy":
+        this.navigateToContentView(key);
+        return;
+      case "Terms of Service":
+        this.navigateToContentView(key);
+        return;
+      default:
+        return;
+    }
+  };
+
+  /**
+   * Navigate to webview to show content.
+   *
+   * @memberof MenuList
+   */
+  navigateToContentView = key => {
+    Picker.isPickerShow(isOpened => {
+      if (isOpened) {
+        Picker.hide();
+      }
+    });
+    const { Settings } = this.props;
+    Navigation.push("tabs", {
+      component: {
+        name: "webview",
+        animation: true,
+        passProps: {
+          url:
+            key === "Privacy Policy"
+              ? Constants.urls.privacyPolicy
+              : Constants.urls.termsAndConditions
+        },
+        options: {
+          screenBackgroundColor: "#ffffff",
+          layout: {
+            backgroundColor: "#ffffff"
+          },
+          topBar: {
+            visible: true,
+            animate: false, // Controls whether TopBar visibility changes should be animated
+            // hideOnScroll: true,
+            backButton: {
+              color: Settings.Theme === "Dark" ? "#fff" : "#000",
+              title: "Settings"
+            },
+            background: {
+              color: Settings.Theme === "Dark" ? "#000" : "#fff"
+            }
+          }
+        }
+      }
+    });
+  };
   /**
    * To open picker with particular key data.
    *
@@ -135,6 +207,22 @@ class MenuList extends PureComponent {
     Picker.show();
   };
 }
+
+///
+const mapDispatchToProps = dispatch => ({
+  updateSettingValue: (key, value) => {
+    dispatch(updateSettings(key, value));
+  }
+});
+
+///
+const mapStateToProps = state => ({ ...state.SettingsReducer });
+///
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(MenuList);
+
 ///
 const styles = StyleSheet.create({
   item: {
@@ -169,18 +257,3 @@ const styles = StyleSheet.create({
 });
 ///
 const { height, width } = Dimensions.get("window");
-
-///
-const mapDispatchToProps = dispatch => ({
-  updateSettingValue: (key, value) => {
-    dispatch(updateSettings(key, value));
-  }
-});
-
-///
-const mapStateToProps = state => ({ settings: state.SettingsReducer });
-///
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(MenuList);

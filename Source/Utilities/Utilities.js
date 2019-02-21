@@ -52,13 +52,3 @@ const getMonthDays = date => {
 const leapYear = year => {
   return year % 100 === 0 ? year % 400 === 0 : year % 4 === 0;
 };
-
-export const Theme = {
-  dark: "Dark",
-  light: "Light"
-};
-
-export const Weight = {
-  grams: "gm",
-  kilograms: "kg"
-};
