@@ -36,7 +36,7 @@ An open source framework for hybrid mobile applications, Designed by Facebook.
 
 # How to start:
  * Clone or Download repository.
- * npm install or yarn install in roo directory
+ * npm install or yarn install in root directory
  * react-native run-ios (or) react-native run-android
 
 **Note:-** This application not tested in android till now.
