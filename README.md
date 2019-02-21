@@ -3,7 +3,7 @@
  A small appliction to maintain diet consumption and statistics for the consumption. This app build in react-native,
 An open source framework for hybrid mobile applications, Designed by Facebook.
 
-![](./ScreenShots/Introduction.png?raw=true&s=200)
+![](./ScreenShots/Introduction.png?raw=true&s=100)
 ![](./ScreenShots/Consumption.png?raw=true)
 ![](./ScreenShots/Calender.png?raw=true)
 ![](./ScreenShots/EntryLog.png?raw=true)
