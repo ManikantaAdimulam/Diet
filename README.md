@@ -4,13 +4,13 @@
 An open source framework for hybrid mobile applications, Designed by Facebook.
 
 <p align="center">
-<img src="./ScreenShots/Introduction.png?raw=true" width="200">
-<img src="./ScreenShots/Consumption.png?raw=true" width="200">
-<img src="./ScreenShots/Calender.png?raw=true" width="200">
-<img src="./ScreenShots/EntryLog.png?raw=true" width="200">
-<img src="./ScreenShots/Statistics.png?raw=true" width="200">
-<img src="./ScreenShots/Settings.png?raw=true" width="200">
-<img src="./ScreenShots/Picker.png?raw=true" width="200">
+<img src="./ScreenShots/Introduction.png?raw=true" width="400">
+<img src="./ScreenShots/Consumption.png?raw=true" width="400">
+<img src="./ScreenShots/Calender.png?raw=true" width="400">
+<img src="./ScreenShots/EntryLog.png?raw=true" width="400">
+<img src="./ScreenShots/Statistics.png?raw=true" width="400">
+<img src="./ScreenShots/Settings.png?raw=true" width="400">
+<img src="./ScreenShots/Picker.png?raw=true" width="400">
  </p>
 
 # Libraries: 
